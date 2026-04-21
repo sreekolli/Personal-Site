@@ -1,0 +1,1096 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Sree Kolli — Builder + Investor</title>
+<meta name="description" content="Sree Kolli — Builder + Investor. The future belongs to the curious." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  /* ============ Tokens ============ */
+  :root {
+    --bg:          #0a0a0a;
+    --bg-elev:     #111111;
+    --line:        #1f1f1f;
+    --line-soft:   #161616;
+    --ink:         #f5f5f5;
+    --ink-muted:   #9a9a9a;
+    --ink-dim:     #5e5e5e;
+    --accent:      #5eead4;
+    --left:        #a5b4fc;
+    --right:       #f0abfc;
+    --radius:      14px;
+
+    --font-sans:   "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-serif:  "Instrument Serif", Georgia, serif;
+    --font-mono:   "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    --max: 1200px;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  ::selection { background: var(--accent); color: #000; }
+  a { color: inherit; text-decoration: none; }
+
+  .bg-fx { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .bg-fx::before, .bg-fx::after {
+    content: "";
+    position: absolute;
+    width: 55vmax; height: 55vmax;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.22;
+    mix-blend-mode: screen;
+  }
+  .bg-fx::before {
+    background: radial-gradient(circle, var(--left), transparent 60%);
+    left: -22vmax; top: -18vmax;
+    animation: drift1 22s ease-in-out infinite alternate;
+  }
+  .bg-fx::after {
+    background: radial-gradient(circle, var(--right), transparent 60%);
+    right: -22vmax; bottom: -18vmax;
+    animation: drift2 28s ease-in-out infinite alternate;
+  }
+  @keyframes drift1 { to { transform: translate(8vw, 6vh) scale(1.08); } }
+  @keyframes drift2 { to { transform: translate(-6vw, -4vh) scale(1.12); } }
+
+  .cursor-glow {
+    position: fixed; top: 0; left: 0;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(94,234,212,0.08), transparent 60%);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    mix-blend-mode: screen;
+    transition: opacity .4s;
+  }
+
+  body::before {
+    content: "";
+    position: fixed; inset: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 32px 32px;
+    pointer-events: none; z-index: 1;
+    mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 80%);
+  }
+
+  .wrap {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+  .section-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(28px, 3.5vw, 44px);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin: 10px 0 28px;
+    max-width: 780px;
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+
+  /* ============ NAV ============ */
+  nav.top {
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(14px);
+    background: rgba(10,10,10,0.6);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  nav .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 32px;
+  }
+  .brand {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .brand .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.35); opacity: 0.7; }
+  }
+  .nav-links { display: flex; gap: 24px; font-size: 13px; color: var(--ink-muted); align-items: center; }
+  .nav-links a { transition: color .18s ease; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a[data-cta] {
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 7px 13px;
+    border-radius: 999px;
+  }
+  .nav-links a[data-cta]:hover { border-color: var(--accent); color: var(--accent); }
+  @media (max-width: 720px) {
+    .nav-links { gap: 14px; }
+    .nav-links a.hide-sm { display: none; }
+  }
+
+  /* ============ HERO ============ */
+  header.hero {
+    min-height: calc(100vh - 56px);
+    display: grid;
+    align-items: center;
+    padding: 40px 0 60px;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+  }
+  #fx-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero .wrap { position: relative; z-index: 2; }
+  .hero-center {
+    text-align: center;
+    max-width: 760px;
+    margin: 0 auto;
+    position: relative;
+    padding: 20px 0;
+  }
+  .hero-center::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 120%;
+    height: 110%;
+    background: radial-gradient(ellipse at 50% 50%, rgba(10,10,10,0.78) 0%, rgba(10,10,10,0.55) 40%, transparent 72%);
+    z-index: -1;
+    pointer-events: none;
+  }
+  .hero-center .name {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(56px, 8vw, 112px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin: 0;
+  }
+  .hero-center .name .soft { color: var(--ink-dim); font-style: italic; }
+  .equals {
+    display: inline-flex;
+    align-items: center; gap: 12px;
+    margin: 26px 0 0;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .equals .line {
+    width: 28px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent));
+  }
+  .equals .line.r { background: linear-gradient(90deg, var(--accent), transparent); }
+  .hero-center .tagline {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(20px, 2vw, 26px);
+    color: var(--ink);
+    margin: 18px auto 0;
+    max-width: 560px;
+    line-height: 1.35;
+  }
+  .hero-ctas {
+    margin-top: 30px;
+    display: inline-flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink);
+    transition: all .2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+  .btn.primary {
+    background: var(--accent);
+    color: #052321;
+    border-color: var(--accent);
+    font-weight: 500;
+  }
+  .btn.primary:hover {
+    background: #86f0db;
+    color: #042018;
+    box-shadow: 0 0 30px rgba(94,234,212,0.25);
+  }
+  .btn .arrow { transition: transform .2s ease; }
+  .btn:hover .arrow { transform: translateX(3px); }
+  .btn svg { width: 14px; height: 14px; }
+
+  section {
+    padding: 72px 0;
+    border-top: 1px solid var(--line-soft);
+    position: relative;
+  }
+
+  /* ============ ABOUT ============ */
+  .about-block {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 44px;
+    align-items: start;
+  }
+  .about-block p {
+    font-size: 15.5px;
+    color: var(--ink);
+    line-height: 1.65;
+    margin: 0 0 14px;
+  }
+  .about-block p:last-child { margin-bottom: 0; }
+  .about-block p .company {
+    color: var(--accent);
+    border-bottom: 1px solid rgba(94,234,212,0.25);
+    transition: color .18s, border-color .18s;
+  }
+  .about-block p .company:hover { color: #86f0db; border-color: #86f0db; }
+  @media (max-width: 860px) {
+    .about-block { grid-template-columns: 1fr; gap: 28px; }
+  }
+
+  /* Headshot frame */
+  .headshot-frame {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background:
+      linear-gradient(135deg, rgba(165,180,252,0.06), rgba(240,171,252,0.06)),
+      var(--bg-elev);
+    box-shadow: 0 30px 80px -40px rgba(94,234,212,0.25);
+    max-width: 380px;
+    margin-left: auto;
+  }
+  .headshot-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 115%, rgba(10,10,10,0.45), transparent 55%);
+  }
+  .headshot-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @media (max-width: 860px) {
+    .headshot-frame { margin-left: 0; max-width: 320px; }
+  }
+
+  /* Mini section title */
+  .mini-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-top: 56px;
+  }
+  .mini-title::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+    flex-shrink: 0;
+  }
+  .mini-title::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--line), transparent);
+  }
+
+  /* Pull quote under mini-title */
+  .belief-quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(22px, 2.4vw, 30px);
+    color: var(--ink);
+    line-height: 1.35;
+    margin: 18px 0 32px;
+    max-width: 820px;
+    padding-left: 18px;
+    border-left: 2px solid var(--accent);
+  }
+
+  /* Values */
+  .values {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-top: 0;
+  }
+  .value {
+    background: var(--bg);
+    padding: 22px 18px;
+    transition: background .2s;
+    min-height: 180px;
+    display: flex; flex-direction: column;
+  }
+  .value:hover { background: var(--bg-elev); }
+  .value .num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+  }
+  .value h4 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.15;
+    margin: 8px 0 8px;
+    letter-spacing: -0.005em;
+  }
+  .value p {
+    margin: 0;
+    color: var(--ink-muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  @media (max-width: 980px) { .values { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 540px) { .values { grid-template-columns: 1fr; } }
+
+  /* ============ THEMES carousel ============ */
+  .carousel { position: relative; margin-top: 24px; }
+  .viewport {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+  }
+  .track {
+    display: flex;
+    transition: transform .6s cubic-bezier(.7,.05,.2,1);
+  }
+  .slide {
+    min-width: 100%;
+    padding: 48px clamp(28px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: 0.8fr 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+  .slide .icon-wrap {
+    display: grid; place-items: center;
+    position: relative;
+  }
+  .slide .icon-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, rgba(94,234,212,0.18), transparent 60%);
+    animation: ringPulse 4s ease-in-out infinite;
+  }
+  @keyframes ringPulse {
+    0%, 100% { transform: scale(0.9); opacity: 0.7; }
+    50%      { transform: scale(1.05); opacity: 1; }
+  }
+  .slide svg.theme-icon {
+    width: clamp(160px, 18vw, 220px);
+    height: clamp(160px, 18vw, 220px);
+    position: relative;
+    animation: float 6s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+  .slide svg.theme-icon path,
+  .slide svg.theme-icon circle,
+  .slide svg.theme-icon line,
+  .slide svg.theme-icon rect,
+  .slide svg.theme-icon polyline {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .slide svg.theme-icon .fillable { fill: var(--accent); fill-opacity: 0.08; }
+  .slide svg.theme-icon .dashed { stroke-dasharray: 4 6; }
+
+  .slide .label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .slide h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(28px, 3.4vw, 44px);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0 0 14px;
+  }
+  .slide .stat {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--ink-muted);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .slide .stat b { color: var(--ink); font-weight: 500; }
+  .slide p {
+    color: var(--ink-muted);
+    font-size: 16px;
+    line-height: 1.65;
+    margin: 0 0 14px;
+    max-width: 560px;
+  }
+  .slide .q {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--ink);
+    font-size: 18px;
+    line-height: 1.45;
+    border-left: 2px solid var(--accent);
+    padding-left: 14px;
+    max-width: 560px;
+  }
+  @media (max-width: 820px) {
+    .slide { grid-template-columns: 1fr; gap: 20px; padding: 36px 28px; }
+    .slide svg.theme-icon { width: 120px; height: 120px; }
+  }
+
+  .carousel-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 18px;
+  }
+  .dots { display: flex; gap: 8px; }
+  .dot {
+    width: 28px; height: 3px; border-radius: 2px;
+    background: var(--line);
+    cursor: pointer;
+    transition: background .2s, width .25s;
+    border: 0; padding: 0;
+  }
+  .dot.active { background: var(--accent); width: 44px; }
+  .arrows { display: flex; gap: 8px; }
+  .arrow-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink-muted);
+    cursor: pointer;
+    transition: all .2s;
+    display: grid; place-items: center;
+    font-family: var(--font-mono);
+    font-size: 16px;
+  }
+  .arrow-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ============ CONTACT ============ */
+  .contact-card {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 48px 36px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(94,234,212,0.08), transparent 60%),
+      var(--bg-elev);
+  }
+  .contact-card h2 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(30px, 4vw, 48px);
+    letter-spacing: -0.01em;
+    margin: 14px 0 28px;
+    line-height: 1.1;
+  }
+  .contact-card h2 em { color: var(--accent); font-style: italic; }
+  .cta-row { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+  /* ============ FOOTER ============ */
+  footer {
+    border-top: 1px solid var(--line-soft);
+    padding: 28px 0 44px;
+  }
+  footer .wrap {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 20px; flex-wrap: wrap;
+  }
+  footer .fine {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.08em;
+  }
+
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<div class="bg-fx" aria-hidden="true"></div>
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<!-- ===================== NAV ===================== -->
+<nav class="top">
+  <div class="wrap">
+    <a href="#top" class="brand"><span class="dot"></span>sree kolli</a>
+    <div class="nav-links">
+      <a href="#about" class="hide-sm">About</a>
+      <a href="#themes" class="hide-sm">Themes</a>
+      <a href="#contact" data-cta>Say hello →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero" id="top">
+  <canvas id="fx-canvas" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-center">
+      <h1 class="name">Sree<br/>Kolli<span class="soft">.</span></h1>
+      <div class="equals">
+        <span class="line"></span>
+        Builder + Investor + Connector
+        <span class="line r"></span>
+      </div>
+      <p class="tagline">The future belongs to the curious.</p>
+      <div class="hero-ctas">
+        <a class="btn primary" href="mailto:kollisreenidhi@gmail.com">
+          Email <span class="arrow">→</span>
+        </a>
+        <a class="btn" href="https://www.linkedin.com/in/sree-kolli/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5V9h3v10zM6.5 7.5A1.75 1.75 0 118.25 5.75 1.75 1.75 0 016.5 7.5zM19 19h-3v-4.8c0-1.2-.5-2.2-1.7-2.2s-1.8.8-1.8 2.2V19h-3V9h3v1.4a3.2 3.2 0 012.8-1.6c2.1 0 3.7 1.4 3.7 4.3z"/></svg>
+          LinkedIn
+        </a>
+        <a class="btn" href="https://x.com/sreenidhikolli" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2H21l-6.52 7.453L22 22h-6.828l-4.77-6.233L4.8 22H2l7.02-8.018L2 2h6.914l4.303 5.676L18.244 2zm-2.394 18h1.82L7.24 4H5.3L15.85 20z"/></svg>
+          X / Twitter
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== ABOUT ===================== -->
+<section id="about">
+  <div class="wrap">
+    <div class="eyebrow reveal">01 / Who I am</div>
+    <h2 class="section-title reveal">
+      Builder by <em>instinct</em>. Investor by <em>conviction</em>. Connector by <em>calling</em>.
+    </h2>
+
+    <div class="about-block">
+      <div class="reveal">
+        <p>
+          I've spent the last decade oscillating between the two sides of the startup
+          table — building startups and investing in founders. I started on Wall Street
+          as a tech investment banker at
+          <a class="company" href="https://www.jpmorgan.com" target="_blank" rel="noopener">J.P. Morgan</a>,
+          helping run financial models for $50B+ of debt financings, then moved into
+          venture capital at the
+          <a class="company" href="https://pfnyc.org" target="_blank" rel="noopener">Partnership Fund for New York City</a>,
+          where I worked on $100M+ in deals across fintech, insurtech, enterprise,
+          digital health, and life sciences.
+        </p>
+        <p>
+          I had the founder bug. I co-founded
+          <a class="company" href="https://techcrunch.com/2020/08/12/conduit-launches-to-help-founders-find-actually-useful-angels-and-vcs/" target="_blank" rel="noopener">Conduit</a>,
+          a private-markets platform that connected 10K+ founders and investors globally,
+          and subsequently was on the founding team of
+          <a class="company" href="https://www.ongoody.com" target="_blank" rel="noopener">Goody</a>
+          — which raised $32M+ from Index, NEA, SoftBank, and others. Our team was
+          recently listed on the
+          <a class="company" href="https://www.prweb.com/releases/goody-ranks-no-604-on-the-2025-inc-5000-list-of-americas-fastest-growing-private-companies-302528400.html" target="_blank" rel="noopener">Inc. 5000 fastest-growing startups</a>.
+        </p>
+        <p>
+          Outside of building and investing, I'm an acrylic floral painter,
+          Bharatanatyam dancer, and aspiring yogi. I trained on the trapeze as a child,
+          and most recently took up gardening with the family. The creative practice
+          isn't a side quest — it trains the same muscle that makes an investor notice
+          a great founder: pattern recognition, timing, and the willingness to be bold.
+        </p>
+      </div>
+
+      <div class="headshot-frame reveal">
+        <img src="images/sree.jpg" alt="Sree Kolli" />
+      </div>
+    </div>
+
+    <!-- WHAT I BELIEVE IN -->
+    <div class="mini-title reveal">What I believe in</div>
+    <div class="belief-quote reveal">
+      The beauty and excitement of life is in learning to navigate the gray — with
+      resilience, perseverance, and intention.
+    </div>
+
+    <!-- VALUES -->
+    <div class="values reveal" id="values">
+      <div class="value">
+        <div class="num">01</div>
+        <h4>People are everything.</h4>
+        <p>Show up for your family, your team, and your community.</p>
+      </div>
+      <div class="value">
+        <div class="num">02</div>
+        <h4>Be relentless.</h4>
+        <p>Doing &gt; Dreaming. The future belongs to the doers.</p>
+      </div>
+      <div class="value">
+        <div class="num">03</div>
+        <h4>Invest in high-slope potential.</h4>
+        <p>The curious will win long-term.</p>
+      </div>
+      <div class="value">
+        <div class="num">04</div>
+        <h4>Balance is a farce.</h4>
+        <p>Prioritization and self-awareness is what matters.</p>
+      </div>
+      <div class="value">
+        <div class="num">05</div>
+        <h4>Serendipity is your friend.</h4>
+        <p>Luck comes to those who are open.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== THEMES CAROUSEL ===================== -->
+<section id="themes">
+  <div class="wrap">
+    <div class="eyebrow reveal">02 / Themes I'm excited about</div>
+    <h2 class="section-title reveal">
+      Markets I keep <em>coming back to</em>.
+    </h2>
+
+    <div class="carousel reveal" id="carousel">
+      <div class="viewport">
+        <div class="track" id="track">
+
+          <div class="slide">
+            <div class="icon-wrap">
+              <span class="icon-ring"></span>
+              <svg class="theme-icon" viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="22" cy="60" r="10" class="fillable" />
+                <circle cx="92" cy="34" r="8"  class="fillable" />
+                <circle cx="92" cy="86" r="8"  class="fillable" />
+                <path d="M32 58 C 55 50, 70 42, 84 36" />
+                <path d="M32 62 C 55 70, 70 78, 84 84" />
+                <polyline points="18,64 22,58 26,64" />
+                <line x1="22" y1="58" x2="22" y2="68" />
+                <path class="dashed" d="M22 24 Q 60 8 98 24" />
+                <path class="dashed" d="M22 96 Q 60 112 98 96" />
+              </svg>
+            </div>
+            <div>
+              <div class="label">Theme · 01</div>
+              <h3>Private Markets.</h3>
+              <div class="stat"><b>$124T</b> · great wealth transfer</div>
+              <p>
+                We're in the midst of the Great Wealth Transfer — a $124T shift of
+                wealth from Baby Boomers to the next generations, reshaping how capital
+                gets allocated across public and private markets.
+              </p>
+              <div class="q">What will this mean for financial markets — and who builds the infrastructure that moves it?</div>
+            </div>
+          </div>
+
+          <div class="slide">
+            <div class="icon-wrap">
+              <span class="icon-ring"></span>
+              <svg class="theme-icon" viewBox="0 0 120 120" aria-hidden="true">
+                <path d="M30 60 C 30 38, 54 38, 60 60 C 66 82, 90 82, 90 60 C 90 38, 66 38, 60 60 C 54 82, 30 82, 30 60 Z" class="fillable" />
+                <polyline points="10,60 28,60 34,48 40,72 46,54 52,60 68,60 74,48 80,72 86,54 92,60 110,60" class="dashed" />
+              </svg>
+            </div>
+            <div>
+              <div class="label">Theme · 02</div>
+              <h3>Longevity.</h3>
+              <div class="stat"><b>8.3B</b> people · aging is a global epidemic</div>
+              <p>
+                8.3 billion people in the world, and aging is a global epidemic. The
+                market is deeply fragmented, the science is real, and the world is eager
+                for solutions at scale.
+              </p>
+              <div class="q">How do we foster a healthier society — and price patient capital into the timelines biology actually runs on?</div>
+            </div>
+          </div>
+
+          <div class="slide">
+            <div class="icon-wrap">
+              <span class="icon-ring"></span>
+              <svg class="theme-icon" viewBox="0 0 120 120" aria-hidden="true">
+                <path d="M20 38 L60 46 L100 38 L100 88 L60 96 L20 88 Z" class="fillable" />
+                <line x1="60" y1="46" x2="60" y2="96" />
+                <path d="M28 46 C 40 44, 52 46, 60 50" />
+                <path d="M92 46 C 80 44, 68 46, 60 50" />
+                <circle cx="60" cy="22" r="6" class="fillable" />
+                <line x1="60" y1="10" x2="60" y2="14" />
+                <line x1="48" y1="22" x2="52" y2="22" />
+                <line x1="68" y1="22" x2="72" y2="22" />
+                <line x1="51" y1="13" x2="54" y2="16" />
+                <line x1="66" y1="16" x2="69" y2="13" />
+              </svg>
+            </div>
+            <div>
+              <div class="label">Theme · 03</div>
+              <h3>Education.</h3>
+              <div class="stat"><b>K–∞</b> · a world that doesn't exist yet</div>
+              <p>
+                In a rapidly evolving world, we need to prepare the children of today
+                for a world of tomorrow that doesn't exist yet.
+              </p>
+              <div class="q">What does the future of education look like when every student has a tutor, a studio, and a research lab in their pocket?</div>
+            </div>
+          </div>
+
+          <div class="slide">
+            <div class="icon-wrap">
+              <span class="icon-ring"></span>
+              <svg class="theme-icon" viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="48" r="22" class="fillable" />
+                <line x1="60" y1="70" x2="60" y2="104" />
+                <line x1="48" y1="92" x2="72" y2="92" />
+                <polyline points="46,48 52,48 56,40 62,56 66,44 70,50 74,48" />
+              </svg>
+            </div>
+            <div>
+              <div class="label">Theme · 04</div>
+              <h3>Women's Health.</h3>
+              <div class="stat"><b>4.1B</b> women · studied since the 1960s</div>
+              <p>
+                There are 4.1 billion women in the world, and most studies only emerged
+                in the 1960s. From diagnosis to care, the system is still broken.
+              </p>
+              <div class="q">How do we help women get the care they need — and rebuild the full stack around them?</div>
+            </div>
+          </div>
+
+          <div class="slide">
+            <div class="icon-wrap">
+              <span class="icon-ring"></span>
+              <svg class="theme-icon" viewBox="0 0 120 120" aria-hidden="true">
+                <circle cx="60" cy="60" r="6" class="fillable" />
+                <ellipse cx="60" cy="60" rx="42" ry="16" />
+                <ellipse cx="60" cy="60" rx="42" ry="16" transform="rotate(60 60 60)" />
+                <ellipse cx="60" cy="60" rx="42" ry="16" transform="rotate(-60 60 60)" />
+                <circle cx="102" cy="60" r="3" class="fillable" />
+                <circle cx="39" cy="24" r="3" class="fillable" />
+                <circle cx="39" cy="96" r="3" class="fillable" />
+              </svg>
+            </div>
+            <div>
+              <div class="label">Theme · 05</div>
+              <h3>Deep Tech.</h3>
+              <div class="stat"><b>∞</b> · robotics · AI · space</div>
+              <p>
+                From robotics to AI infrastructure to space, the world of opportunity
+                keeps expanding — and so does what we ask machines to do on our behalf.
+              </p>
+              <div class="q">What does our future look like as mankind — and who has the taste to build it responsibly?</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="carousel-controls">
+        <div class="dots" id="dots" role="tablist"></div>
+        <div class="arrows">
+          <button class="arrow-btn" id="prev" aria-label="Previous">←</button>
+          <button class="arrow-btn" id="next" aria-label="Next">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-card reveal">
+      <div class="eyebrow" style="justify-content:center; display:inline-flex;">Let's talk</div>
+      <h2>If you're <em>building</em> or <em>investing</em> in the future, I'd love to connect.</h2>
+      <div class="cta-row">
+        <a class="btn primary" href="mailto:kollisreenidhi@gmail.com">
+          Email me <span class="arrow">→</span>
+        </a>
+        <a class="btn" href="https://www.linkedin.com/in/sree-kolli/" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.5 2h-17A1.5 1.5 0 002 3.5v17A1.5 1.5 0 003.5 22h17a1.5 1.5 0 001.5-1.5v-17A1.5 1.5 0 0020.5 2zM8 19H5V9h3v10zM6.5 7.5A1.75 1.75 0 118.25 5.75 1.75 1.75 0 016.5 7.5zM19 19h-3v-4.8c0-1.2-.5-2.2-1.7-2.2s-1.8.8-1.8 2.2V19h-3V9h3v1.4a3.2 3.2 0 012.8-1.6c2.1 0 3.7 1.4 3.7 4.3z"/></svg>
+          LinkedIn
+        </a>
+        <a class="btn" href="https://x.com/sreenidhikolli" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2H21l-6.52 7.453L22 22h-6.828l-4.77-6.233L4.8 22H2l7.02-8.018L2 2h6.914l4.303 5.676L18.244 2zm-2.394 18h1.82L7.24 4H5.3L15.85 20z"/></svg>
+          X / Twitter
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="fine">© 2026 SREE KOLLI · CAMBRIDGE / NEW YORK</div>
+    <div class="fine">v0.5 — prototype</div>
+  </div>
+</footer>
+
+<script>
+  /* Reveal on scroll */
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* Cursor glow */
+  const glow = document.querySelector('.cursor-glow');
+  let tx = window.innerWidth/2, ty = window.innerHeight/2, cx = tx, cy = ty;
+  window.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
+  window.addEventListener('mouseleave', () => { glow.style.opacity = 0; });
+  window.addEventListener('mouseenter', () => { glow.style.opacity = 1; });
+  (function animateGlow(){
+    cx += (tx - cx) * 0.08; cy += (ty - cy) * 0.08;
+    glow.style.transform = `translate(${cx}px, ${cy}px) translate(-50%, -50%)`;
+    requestAnimationFrame(animateGlow);
+  })();
+
+  /* Hero constellation */
+  (function(){
+    const canvas = document.getElementById('fx-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W = 0, H = 0, dpr = 1;
+    const particles = [];
+    let mx = -9999, my = -9999;
+    let running = true;
+
+    function colorFor(x, alpha) {
+      const t = Math.max(0, Math.min(1, x / W));
+      let r, g, b;
+      if (t < 0.5) {
+        const k = t / 0.5;
+        r = 165 + (94  - 165) * k;
+        g = 180 + (234 - 180) * k;
+        b = 252 + (212 - 252) * k;
+      } else {
+        const k = (t - 0.5) / 0.5;
+        r = 94  + (240 - 94)  * k;
+        g = 234 + (171 - 234) * k;
+        b = 212 + (252 - 212) * k;
+      }
+      return `rgba(${r|0}, ${g|0}, ${b|0}, ${alpha})`;
+    }
+
+    function populate() {
+      particles.length = 0;
+      const n = Math.max(38, Math.min(95, Math.floor((W * H) / 17000)));
+      for (let i = 0; i < n; i++) {
+        particles.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.28,
+          vy: (Math.random() - 0.5) * 0.28,
+          r: 0.8 + Math.random() * 1.6
+        });
+      }
+    }
+
+    function resize() {
+      dpr = Math.min(2, window.devicePixelRatio || 1);
+      const rect = canvas.getBoundingClientRect();
+      W = rect.width;
+      H = rect.height;
+      canvas.width  = Math.max(1, W * dpr);
+      canvas.height = Math.max(1, H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      populate();
+    }
+
+    window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mx = e.clientX - rect.left;
+      my = e.clientY - rect.top;
+    });
+    window.addEventListener('mouseleave', () => { mx = -9999; my = -9999; });
+
+    const pauseObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { running = e.isIntersecting; if (running) loop(); });
+    }, { threshold: 0.01 });
+    pauseObs.observe(canvas);
+
+    function tick() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        const dx = mx - p.x, dy = my - p.y;
+        const d2 = dx*dx + dy*dy;
+        if (d2 < 180*180 && d2 > 1) {
+          const d = Math.sqrt(d2);
+          p.vx += (dx / d) * 0.03;
+          p.vy += (dy / d) * 0.03;
+        }
+        p.vx = p.vx * 0.985 + (Math.random() - 0.5) * 0.012;
+        p.vy = p.vy * 0.985 + (Math.random() - 0.5) * 0.012;
+        if (p.x < -10) p.x = W + 10;
+        if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10;
+        if (p.y > H + 10) p.y = -10;
+      }
+
+      ctx.lineWidth = 0.6;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i], b = particles[j];
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const d2 = dx*dx + dy*dy;
+          if (d2 < 140*140) {
+            const d = Math.sqrt(d2);
+            const alpha = (1 - d / 140) * 0.26;
+            ctx.strokeStyle = colorFor((a.x + b.x) / 2, alpha);
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      for (const p of particles) {
+        ctx.fillStyle = colorFor(p.x, 0.75);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function loop() {
+      if (!running) return;
+      tick();
+      requestAnimationFrame(loop);
+    }
+
+    requestAnimationFrame(() => {
+      resize();
+      loop();
+    });
+  })();
+
+  /* Themes carousel */
+  (function(){
+    const track = document.getElementById('track');
+    const slides = track.children;
+    const n = slides.length;
+    const dotsEl = document.getElementById('dots');
+    let idx = 0, timer = null;
+
+    for (let i = 0; i < n; i++) {
+      const b = document.createElement('button');
+      b.className = 'dot' + (i === 0 ? ' active' : '');
+      b.setAttribute('aria-label', 'Go to slide ' + (i+1));
+      b.addEventListener('click', () => go(i, true));
+      dotsEl.appendChild(b);
+    }
+    function go(i, user) {
+      idx = (i + n) % n;
+      track.style.transform = `translateX(-${idx * 100}%)`;
+      [...dotsEl.children].forEach((d, k) => d.classList.toggle('active', k === idx));
+      if (user) restart();
+    }
+    function next(){ go(idx + 1); }
+    function prev(){ go(idx - 1); }
+    function start(){ timer = setInterval(next, 6500); }
+    function stop(){ clearInterval(timer); }
+    function restart(){ stop(); start(); }
+
+    document.getElementById('next').addEventListener('click', () => { next(); restart(); });
+    document.getElementById('prev').addEventListener('click', () => { prev(); restart(); });
+
+    const el = document.getElementById('carousel');
+    el.addEventListener('mouseenter', stop);
+    el.addEventListener('mouseleave', start);
+
+    let sx = 0, dx = 0;
+    track.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; dx = 0; }, { passive: true });
+    track.addEventListener('touchmove',  (e) => { dx = e.touches[0].clientX - sx; }, { passive: true });
+    track.addEventListener('touchend',   () => {
+      if (Math.abs(dx) > 50) { dx < 0 ? next() : prev(); restart(); }
+    });
+    start();
+  })();
+</script>
+
+</body>
+</html>
